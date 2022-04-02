@@ -13,8 +13,6 @@ class _SignUpState extends State<SignUp> {
   GlobalKey<FormState> _form = GlobalKey<FormState>();
 
   void _validate() {
-    /*how to handle that: are you 100% sure that in this case "_formKey.currentState" CAN'T ever be null
-    telling by hand the compiler that calling "validate" method is completely safe at this point*/
     _form.currentState!.validate();
   }
 
