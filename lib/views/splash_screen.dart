@@ -35,8 +35,7 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
 <<<<<<< HEAD
-    return 
-      new SplashScreen(
+    return new SplashScreen(
         seconds: 10,
         image: new Image.asset('assets/icons/workwaves.png'),
         backgroundColor: Colors.white,
