@@ -9,6 +9,31 @@ class SignUp extends StatefulWidget {
   State<SignUp> createState() => _SignUpState();
 }
 
+Widget buildLoginBtn(BuildContext context) {
+  return Container(
+    padding: EdgeInsets.symmetric(vertical: 25),
+    width: double.infinity,
+    child: RaisedButton(
+      elevation: 5,
+      onPressed: () => Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Home())),
+      //print('Signup pressed'),
+      padding: EdgeInsets.all(15),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      // RoundedRectangleBorder
+      color: Color(0xff120E21),
+      child: Text(
+        'Sign Up',
+        style: TextStyle(
+          color: Color(0xffFFFFFF),
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ), // RaisedButton
+  );
+}
+
 class _SignUpState extends State<SignUp> {
   GlobalKey<FormState> _form = GlobalKey<FormState>();
 
@@ -33,6 +58,14 @@ class _SignUpState extends State<SignUp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Text(
+                'Log-In',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 50),
               TextFormField(
                 validator: ValidationBuilder()
                     .minLength(5)
@@ -44,6 +77,7 @@ class _SignUpState extends State<SignUp> {
                   helperText: 'Min length: 5, max length: 50',
                 ),
               ),
+              SizedBox(height: 20),
               TextFormField(
                 validator: ValidationBuilder()
                     .minLength(8)
@@ -61,6 +95,7 @@ class _SignUpState extends State<SignUp> {
                 enableSuggestions: false,
                 autocorrect: false,
               ),
+              SizedBox(height: 20),
               TextFormField(
                 validator: ValidationBuilder()
                     .email()
@@ -70,17 +105,20 @@ class _SignUpState extends State<SignUp> {
                 decoration: InputDecoration(labelText: 'Email'),
                 keyboardType: TextInputType.text,
               ),
+              SizedBox(height: 20),
               TextFormField(
                 validator: ValidationBuilder().phone().maxLength(10).build(),
                 decoration: InputDecoration(labelText: 'Phone Number'),
               ),
               SizedBox(height: 30),
+              buildLoginBtn(context),
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        /* tooltip: 'Next',*/
+
+      /*floatingActionButton: FloatingActionButton(
+        */ /* tooltip: 'Next',*/ /*
         child: Text('Sign-Up'),
         onPressed: () {
           _validate();
@@ -88,7 +126,7 @@ class _SignUpState extends State<SignUp> {
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => Home()));
         },
-      ),
+      ),*/
       /*ElevatedButton: ElevatedButton(
           onPressed: () {
             Navigator.pushReplacement(
