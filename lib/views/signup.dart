@@ -58,8 +58,9 @@ class _SignUpState extends State<SignUp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              SizedBox(height: 20),
               Text(
-                'Log-In',
+                'Sign-Up',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 40,
@@ -74,6 +75,7 @@ class _SignUpState extends State<SignUp> {
                     .build(),
                 decoration: InputDecoration(
                   labelText: 'Name',
+                  filled: true,
                   helperText: 'Min length: 5, max length: 50',
                 ),
               ),
@@ -86,8 +88,10 @@ class _SignUpState extends State<SignUp> {
                     .required()
                     .build(),
                 /*validator: requiredValidator,*/
+
                 decoration: InputDecoration(
                   labelText: 'Password',
+                  filled: true,
                   helperText:
                       'Min length: 6, max length: 16, Must contain a symbol or number',
                 ),
@@ -102,13 +106,23 @@ class _SignUpState extends State<SignUp> {
                     .maxLength(50)
                     .required()
                     .build(),
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  filled: true,
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(top: 14),
+                ),
                 keyboardType: TextInputType.text,
               ),
               SizedBox(height: 20),
               TextFormField(
                 validator: ValidationBuilder().phone().maxLength(10).build(),
-                decoration: InputDecoration(labelText: 'Phone Number'),
+                decoration: InputDecoration(
+                  labelText: 'Phone Number',
+                  filled: true,
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(top: 14),
+                ),
               ),
               SizedBox(height: 30),
               buildLoginBtn(context),
