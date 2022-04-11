@@ -8,6 +8,31 @@ class SignUp extends StatefulWidget {
   State<SignUp> createState() => _SignUpState();
 }
 
+Widget buildLoginBtn(BuildContext context) {
+  return Container(
+    padding: EdgeInsets.symmetric(vertical: 25),
+    width: double.infinity,
+    child: RaisedButton(
+      elevation: 5,
+      onPressed: () => Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Home())),
+      //print('Signup pressed'),
+      padding: EdgeInsets.all(15),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      // RoundedRectangleBorder
+      color: Color(0xff120E21),
+      child: Text(
+        'Sign Up',
+        style: TextStyle(
+          color: Color(0xffFFFFFF),
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ), // RaisedButton
+  );
+}
+
 class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
