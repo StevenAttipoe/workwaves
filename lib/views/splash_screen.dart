@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'loginScreen.dart';
 import 'package:splashscreen/splashscreen.dart';
-import 'package:workwaves/views/login.dart';
+import 'package:workwaves/views/loginScreen.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -11,7 +11,6 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _navigateToLogin();
   }
@@ -24,7 +23,7 @@ class _SplashState extends State<Splash> {
 
   @override
   Widget build(BuildContext context) {
-    return new SplashScreen(
+    return SplashScreen(
       seconds: 10,
       image: new Image.asset('assets/icons/workwaves.png'),
       backgroundColor: Colors.white,
