@@ -3,8 +3,6 @@ import 'package:workwaves/views/nav/chat.dart';
 import 'package:workwaves/views/nav/profile.dart';
 import 'package:workwaves/views/nav/resume.dart';
 import 'package:workwaves/views/nav/search.dart';
-import 'package:hexcolor/hexcolor.dart';
-
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -70,9 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_appBar),
-      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
