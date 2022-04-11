@@ -13,6 +13,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  get prefixIcon => null;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,25 +24,61 @@ class _SearchPageState extends State<SearchPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            TextFormField(
+              validator: ValidationBuilder().required().build(),
+              decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Colors.black,
+                ),
+                labelText: 'Search',
+              ),
+            ),
+
+            //filter icon
             Text(
-              'Search',
+              "Filters",
               style: TextStyle(
-                color: Color(0x0E1C21),
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.left,
+            ),
+            //name with Icons
+            //Results from search will be here
+            SizedBox(height: 50),
+            Text(
+              "Create an Application",
+              style: TextStyle(
+                decorationColor: Colors.black,
+                color: Colors.black,
+                //color: Color(0xff100e0e),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 50),
+            Text(
+              "Description",
+              style: TextStyle(
+                color: Colors.black,
                 //color: Color(0xff100e0e),
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 50),
-            TextFormField(
-              validator: ValidationBuilder().required().build(),
-              decoration: InputDecoration(
-                labelText: 'Name',
+            Text(
+              "We are a young startup from Paris "
+              "looking for a designer who can help us "
+              "design a tech oriented application."
+              " We are open to proposals.",
+              style: TextStyle(
+                color: Colors.black,
+                //color: Color(0xff100e0e),
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
               ),
-            ),
-            //filter icon
-            //name with Icons
-            //Results from search will be here
+            )
           ],
         ),
       ),

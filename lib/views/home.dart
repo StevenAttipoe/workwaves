@@ -5,7 +5,6 @@ import 'package:workwaves/views/nav/resume.dart';
 import 'package:workwaves/views/nav/search.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -31,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _appBar = "Home";
 
   static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black);
   List<Widget> _widgetOptions = <Widget>[
     ResumePage(),
     SearchPage(),
@@ -77,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items:  const <BottomNavigationBarItem>[
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
@@ -88,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.search,
-              ),
+            ),
             label: 'Search',
             backgroundColor: Colors.blueGrey,
           ),

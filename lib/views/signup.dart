@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workwaves/views/home.dart';
 import 'package:form_validator/form_validator.dart';
+import 'package:workwaves/views/loginScreen.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ Widget buildLoginBtn(BuildContext context) {
     child: RaisedButton(
       elevation: 5,
       onPressed: () => Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Home())),
+          context, MaterialPageRoute(builder: (context) => LoginScreen())),
       //print('Signup pressed'),
       padding: EdgeInsets.all(15),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),

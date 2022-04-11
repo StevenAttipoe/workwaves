@@ -84,13 +84,14 @@ Widget buildPassword() {
   );
 }
 
-Widget buildLoginBtn() {
+Widget buildLoginBtn(BuildContext context) {
   return Container(
     padding: EdgeInsets.symmetric(vertical: 25),
     width: double.infinity,
     child: RaisedButton(
       elevation: 5,
-      onPressed: () => print('Login Pressed'),
+      onPressed: () => Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Home())),
       padding: EdgeInsets.all(15),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       // RoundedRectangleBorder
@@ -168,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       buildEmail(),
                       SizedBox(height: 20),
                       buildPassword(),
-                      buildLoginBtn(),
+                      buildLoginBtn(context),
                       buildSignUpBtn(context),
                     ],
                   ),
