@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: ' WorkWaves',
       home:  Splash(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
