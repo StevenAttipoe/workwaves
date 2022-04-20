@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:workwaves/views/home.dart';
+import 'package:workwaves/views/success.dart';
 import 'package:workwaves/views/loginScreen.dart';
 import 'package:workwaves/views/widgets/login_widgets.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({ Key? key }) : super(key: key);
+  const SignUp({Key? key}) : super(key: key);
 
   @override
   State<SignUp> createState() => _SignUpState();
 }
 
-
 class _SignUpState extends State<SignUp> {
   @override
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
@@ -36,7 +36,8 @@ class _SignUpState extends State<SignUp> {
                     ])),
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -51,6 +52,10 @@ class _SignUpState extends State<SignUp> {
                             fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
+                      buildFname(),
+                      const SizedBox(height: 10),
+                      buildLname(),
+                      const SizedBox(height: 10),
                       buildEmail(),
                       const SizedBox(height: 10),
                       buildPassword(),
@@ -58,16 +63,25 @@ class _SignUpState extends State<SignUp> {
                         padding: EdgeInsets.symmetric(vertical: 25),
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () => print('Signup Pressed'),
+                          onPressed: () => {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Success_Screen()))
+                          },
                           style: ButtonStyle(
-                            elevation: MaterialStateProperty.all(5),
-                            padding:MaterialStateProperty.all(const EdgeInsets.all(15,)),
-                            backgroundColor: MaterialStateProperty.all(Color(0xff120E21)),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>
-                            (RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              )
-                            )),
+                              elevation: MaterialStateProperty.all(5),
+                              padding: MaterialStateProperty.all(
+                                  const EdgeInsets.all(
+                                15,
+                              )),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Color(0xff120E21)),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ))),
                           child: const Text(
                             'SIGN UP',
                             style: TextStyle(
@@ -76,27 +90,33 @@ class _SignUpState extends State<SignUp> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ), 
+                        ),
                       ),
                       GestureDetector(
                         onTap: () {
                           Navigator.pushReplacement(
-                              context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()));
                         },
                         child: RichText(
                           text: const TextSpan(children: [
                             TextSpan(
                               text: 'Already have an Account? ',
                               style: TextStyle(
-                                  color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500),
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500),
                             ),
                             TextSpan(
                                 text: 'Log In',
                                 style: TextStyle(
-                                    color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold))
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold))
                           ]),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
