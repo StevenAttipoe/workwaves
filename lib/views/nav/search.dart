@@ -36,13 +36,22 @@ class _SearchPageState extends State<SearchPage> {
             ),
 
             //filter icon
-            Text(
-              "Filters",
-              style: TextStyle(
-                color: Colors.black,
-              ),
-              textAlign: TextAlign.left,
+            Row(children: <Widget>[
+              const Icon(
+                Icons.filter_list,
+                size: 40,
+              )
+            ]),
+
+            Container(
+              color: Color(0xffEFEDF0),
+              height: 80,
+              child: Row(children: <Widget>[
+                const Text("Chasya Abakah",
+                    style: TextStyle(color: Colors.black, fontSize: 25)),
+              ]),
             ),
+
             //name with Icons
             //Results from search will be here
             SizedBox(height: 50),
