@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:workwaves/views/nav/chat.dart';
 import 'package:workwaves/views/nav/profile.dart';
 import 'package:workwaves/views/nav/resume.dart';
 import 'package:workwaves/views/nav/search.dart';
