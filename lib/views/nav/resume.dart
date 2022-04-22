@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:workwaves/subpages/projects.dart';
+import 'package:workwaves/views/subpages/projects.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:workwaves/model/chart_data.dart';
 

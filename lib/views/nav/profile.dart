@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:workwaves/views/loginScreen.dart';
 import 'package:workwaves/views/nav/review_screen.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -94,19 +96,28 @@ class _ProfilePageState extends State<ProfilePage> {
               padding: EdgeInsets.only(left: 16),
               child: Text('64 Reviews'),
             ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ReviewScreen()));
+                },
+                child: const Text('View All'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.black,
+                )),
             Padding(
-              padding: const EdgeInsets.only(right: 16),
+              padding: const EdgeInsets.only(right: 15.0),
               child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => new ReviewScreen()));
-                  },
-                  child: const Text('View All'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.black54,
-                  )),
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()));
+                },
+                child: const Text('Sign Out'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.black,
+                ),
+              ),
             ),
           ],
         ),

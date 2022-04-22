@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:workwaves/views/home.dart';
 import 'package:workwaves/views/success.dart';
 import 'package:workwaves/views/loginScreen.dart';
 import 'package:workwaves/views/widgets/login_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -13,6 +14,20 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsFlutterBinding.ensureInitialized();
+    initializeAppFirebase();
+  }
+
+  initializeAppFirebase() async {
+    await Firebase.initializeApp();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,19 +66,105 @@ class _SignUpState extends State<SignUp> {
                             fontSize: 40,
                             fontWeight: FontWeight.bold),
                       ),
+                      // Row(
+                      //   children: [
+                      //     buildFname(),
+                      //     buildLname(),
+                      //   ],
+                      // ),
                       const SizedBox(height: 10),
-                      buildFname(),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Email',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 6,
+                                      offset: Offset(0, 2))
+                                ]),
+                            height: 60,
+                            child: TextField(
+                              controller: _emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.only(top: 14),
+                                prefixIcon:
+                                    Icon(Icons.email, color: Color(0xffffffff)),
+                                hintText: 'Email',
+                                hintStyle: TextStyle(color: Colors.white),
+                                filled: true,
+                                fillColor: Color(0xff9A9A9A),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                       const SizedBox(height: 10),
-                      buildLname(),
-                      const SizedBox(height: 10),
-                      buildEmail(),
-                      const SizedBox(height: 10),
-                      buildPassword(),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Password',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 6,
+                                      offset: Offset(0, 2))
+                                ]),
+                            height: 60,
+                            child: TextField(
+                              obscureText: true,
+                              controller: _passwordController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.only(top: 14),
+                                prefixIcon:
+                                    Icon(Icons.lock, color: Color(0xffffffff)),
+                                hintText: 'Password',
+                                hintStyle: TextStyle(color: Colors.white),
+                                filled: true,
+                                fillColor: Color(0xff9A9A9A),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                       Container(
                         padding: EdgeInsets.symmetric(vertical: 25),
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () => {
+                          onPressed: () async => {
+                            await FirebaseAuth.instance
+                                .createUserWithEmailAndPassword(
+                                    email: _emailController.text.toString().trim(),
+                                    password: _passwordController.text.toString().trim()),
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(

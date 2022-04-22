@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "580493652384",
+    "project_id": "workwaves-ios-flutter",
+    "storage_bucket": "workwaves-ios-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580493652384:android:1046c32c63cca768b1f4c5",
+        "android_client_info": {
+          "package_name": "com.sea.workwaves"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580493652384-01s9i36444cmd6mbvjcaa560a21rk02o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCNYSRESpuXH2Z-JhrGljWQGr-eYsMwbg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580493652384-01s9i36444cmd6mbvjcaa560a21rk02o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "580493652384-3998b8alkgl3q7lohrvgpl7mgdr5onma.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sea.workwaves"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
