@@ -5,8 +5,7 @@ import 'package:workwaves/views/nav/profile.dart';
 import 'package:workwaves/views/nav/resume.dart';
 import 'package:workwaves/views/nav/search.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -18,47 +17,18 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   TextEditingController _searchController = TextEditingController();
 
-  late Future resultsLoaded;
   List _allResults = [];
-  List _resultsList=[];
+
   @override
   void initState() {
     super.initState();
-    _searchController.addListener(_onSearchChanged);
+    WidgetsFlutterBinding.ensureInitialized();
   }
 
-  @override
-  void dispose() {
-    _searchController.removeListener(_onSearchChanged);
-    _searchController.dispose();
-    super.dispose();
+  initializeAppFirebase() async {
+    await Firebase.initializeApp();
   }
 
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    resultsLoaded = getSearchitem();
-  }
-
-  //function for search
-  _onSearchChanged() {
-    print(_searchController.text);
-  }
-
-  searchResultsList(){
-    var showResults=[];
-    if(_searchController.text!=""){
-      //we have a search parameter
-      for(var trip in _allResults){
-        var
-      }
-
-    }else{
-      showResults=List.from(_allResults);
-    }
-    setState(() {
-      _resultsList=_allResults;
-    });
-  }
   get prefixIcon => null;
 
   /*getSearchitem() async {
@@ -75,7 +45,7 @@ class _SearchPageState extends State<SearchPage> {
       _allResults = data.documents;
     });
   searchResultsList();
-    return "complete" *//*data.documents*//*;
+    return "complete" */ /*data.documents*/ /*;
   }*/
 
   @override
@@ -96,6 +66,11 @@ class _SearchPageState extends State<SearchPage> {
                 labelText: 'Search',
               ),
             ),
+            IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  setState(() {});
+                }),
 
             //filter icon
             Row(children: <Widget>[
@@ -105,12 +80,6 @@ class _SearchPageState extends State<SearchPage> {
               )
             ]),
 
-            Expanded(child: ListView.builder(
-                itemCount: _resultsList.length,
-                itemBuilder:( BuildContext context, int index)=>
-                /*buildTripCard(context,_resultsList[index]),*/
-            )
-            /*
             Container(
               color: Color(0xffEFEDF0),
               height: 80,
@@ -122,45 +91,6 @@ class _SearchPageState extends State<SearchPage> {
                 const Text("Chasya Abakah",
                     style: TextStyle(color: Colors.black, fontSize: 25)),
               ]),
-            ),*/
-
-            //name with Icons
-            //Results from search will be here
-          /*  SizedBox(height: 15),
-            TextField(
-*/
-                /*"Create an Application",
-              style: TextStyle(
-                decorationColor: Colors.black,
-                color: Colors.black,
-                //color: Color(0xff100e0e),
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),*/
-               /* ),*/
-         /*   SizedBox(height: 10),
-            Text(
-              "Description",
-              style: TextStyle(
-                color: Colors.black,
-                //color: Color(0xff100e0e),
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),*/
-          /*  SizedBox(height: 10),*/
-           /* Text(
-              "We are a young startup from Paris "
-              "looking for a designer who can help us "
-              "design a tech oriented application."
-              " We are open to proposals.",
-              style: TextStyle(
-                color: Colors.black,
-                //color: Color(0xff100e0e),
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-            )*/
             ),
           ],
         ),
