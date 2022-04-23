@@ -106,7 +106,7 @@ class _ResumePageState extends State<ResumePage> {
                     ElevatedButton(
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xFF000000)) ),
                       onPressed: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                             context, MaterialPageRoute(builder: (context) => ActiveProjects()));
                       },
                     child: const Text(

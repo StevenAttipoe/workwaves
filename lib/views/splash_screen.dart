@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:workwaves/views/home.dart';
-// import 'package:splashscreen/splashscreen.dart';
 import 'package:workwaves/views/loginScreen.dart';
 
 class Splash extends StatefulWidget {
@@ -37,13 +36,6 @@ class _SplashState extends State<Splash> {
 
   @override
   Widget build(BuildContext context) {
-    // return SplashScreen(
-    //   seconds: 10,
-    //   image: new Image.asset('assets/icons/workwaves.png'),
-    //   backgroundColor: Colors.white,
-    //   photoSize: 200.0,
-    //   loaderColor: Colors.black,
-    // );
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 253, 253, 253),
       body: SafeArea(
