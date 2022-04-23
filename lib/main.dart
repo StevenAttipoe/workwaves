@@ -13,8 +13,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: ' WorkWaves',
       home:  Splash(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-// flutter run --no-sound-null-safety 
+// flutter run

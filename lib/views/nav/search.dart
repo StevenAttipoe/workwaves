@@ -1,13 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:form_validator/form_validator.dart';
 import 'package:workwaves/views/nav/chat.dart';
 import 'package:workwaves/views/nav/profile.dart';
 import 'package:workwaves/views/nav/resume.dart';
 import 'package:workwaves/views/nav/search.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-
 
 
 
@@ -64,7 +61,7 @@ class _SearchPageState extends State<SearchPage> {
   }
   get prefixIcon => null;
 
-  getSearchitem() async {
+  /*getSearchitem() async {
     final uid = await Provider.of(context).auth.getCurrentUID();
     var data = await Firestore.instance
         .collection('userData')
@@ -78,8 +75,8 @@ class _SearchPageState extends State<SearchPage> {
       _allResults = data.documents;
     });
   searchResultsList();
-    return "complete" /*data.documents*/;
-  }
+    return "complete" *//*data.documents*//*;
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -91,8 +88,6 @@ class _SearchPageState extends State<SearchPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextFormField(
-              validator: ValidationBuilder().required().build(),
-              controller: _searchController,
               decoration: InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,

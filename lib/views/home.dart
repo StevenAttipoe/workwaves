@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:workwaves/views/nav/chat.dart';
 import 'package:workwaves/views/nav/profile.dart';
 import 'package:workwaves/views/nav/resume.dart';
 import 'package:workwaves/views/nav/search.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -11,7 +9,7 @@ class Home extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Workwaves',
       home: MyHomePage(),
     );
@@ -30,11 +28,10 @@ class _MyHomePageState extends State<MyHomePage> {
   String _appBar = "Home";
 
   static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black);
-  List<Widget> _widgetOptions = <Widget>[
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  List<Widget> widgetOptions = const <Widget>[
     ResumePage(),
     SearchPage(),
-    ChatPage(),
     ProfilePage(),
   ];
 
@@ -54,11 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
           break;
         case 2:
           {
-            _appBar = 'Chat';
-          }
-          break;
-        case 3:
-          {
             _appBar = 'Profile';
           }
           break;
@@ -69,11 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_appBar),
-      ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -82,28 +71,18 @@ class _MyHomePageState extends State<MyHomePage> {
               Icons.home,
             ),
             label: 'Home',
-            backgroundColor: Colors.blueGrey,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.search,
             ),
             label: 'Search',
-            backgroundColor: Colors.blueGrey,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.chat_bubble,
-            ),
-            label: 'Chat',
-            backgroundColor: Colors.blueGrey,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.account_circle,
             ),
             label: 'Profile',
-            backgroundColor: Colors.blueGrey,
           ),
         ],
         currentIndex: _selectedIndex,
