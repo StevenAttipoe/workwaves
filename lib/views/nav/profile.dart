@@ -22,6 +22,8 @@ class _ProfilePageState extends State<ProfilePage> {
         buildContent(),
         SizedBox(height: 20),
         buildReviews(),
+        SizedBox(height: 115),
+        buildSignOut(),
       ]),
     );
   }
@@ -105,20 +107,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: ElevatedButton.styleFrom(
                   primary: Colors.black,
                 )),
-            Padding(
-              padding: const EdgeInsets.only(right: 15.0),
-              child: ElevatedButton(
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()));
-                },
-                child: const Text('Sign Out'),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.black,
-                ),
-              ),
-            ),
           ],
         ),
       );
@@ -138,6 +126,21 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Colors.grey.shade800,
         backgroundImage: NetworkImage(
           "https://cdn-icons-png.flaticon.com/512/1077/1077012.png",
+        ),
+      );
+
+  Widget buildSignOut() => Align(
+        alignment: Alignment.bottomRight,
+        child: ElevatedButton(
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => LoginScreen()));
+          },
+          child: const Text('Sign Out'),
+          style: ElevatedButton.styleFrom(
+            primary: Colors.black,
+          ),
         ),
       );
 }
