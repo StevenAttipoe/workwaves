@@ -113,6 +113,7 @@ class _SearchPageState extends State<SearchPage> {
                                   child: Text(
                                     documentSnapshot['Name'],
                                     style: const TextStyle(
+                                        color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20),
                                   ),
