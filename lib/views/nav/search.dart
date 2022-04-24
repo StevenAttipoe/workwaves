@@ -15,7 +15,9 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  TextEditingController _searchController = TextEditingController();
+  final CollectionReference _projectss =
+      FirebaseFirestore.instance.collection('Projects');
+  //TextEditingController _searchController = TextEditingController();
 
   List _allResults = [];
 
@@ -79,8 +81,36 @@ class _SearchPageState extends State<SearchPage> {
                 size: 40,
               )
             ]),
+            StreamBuilder(
+              stream: _projectss.snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                if (streamSnapshot.hasData) {
+                  return ListView.builder(
+                    itemCount: streamSnapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      final DocumentSnapshot documentSnapshot =
+                          streamSnapshot.data!.docs[index];
+                      return Card(
+                        margin: const EdgeInsets.all(10),
+                        child: ListTile(
+                          title: Text(documentSnapshot['Title']),
+                          subtitle: Text(documentSnapshot['Name']),
+                          trailing: SizedBox(
+                            width: 100,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
 
-            Container(
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
+
+            /*Container(
               color: Color(0xffEFEDF0),
               height: 80,
               child: Row(children: <Widget>[
@@ -91,7 +121,7 @@ class _SearchPageState extends State<SearchPage> {
                 const Text("Chasya Abakah",
                     style: TextStyle(color: Colors.black, fontSize: 25)),
               ]),
-            ),
+            ),*/
           ],
         ),
       ),
