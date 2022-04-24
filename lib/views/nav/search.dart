@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:workwaves/views/nav/chat.dart';
@@ -15,11 +16,9 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  final TextEditingController _searchController = TextEditingController();
   final CollectionReference _projectss =
       FirebaseFirestore.instance.collection('Projects');
-  //TextEditingController _searchController = TextEditingController();
-
-  List _allResults = [];
 
   @override
   void initState() {
@@ -32,28 +31,79 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   get prefixIcon => null;
-
-  /*getSearchitem() async {
-    final uid = await Provider.of(context).auth.getCurrentUID();
-    var data = await Firestore.instance
-        .collection('userData')
-        .documentation(uid)
-        .collection('name')
-        .collection('title')
-        .collection('description')
-        .getDocuments();
-
-    setState(() {
-      _allResults = data.documents;
-    });
-  searchResultsList();
-    return "complete" */ /*data.documents*/ /*;
-  }*/
-
+  String title = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: Icon(Icons.search_outlined, color: Colors.white70),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        title: Card(
+          child: TextField(
+            decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search), hintText: 'Search...'),
+            onChanged: (val) {
+              setState(() {
+                title = val;
+              });
+            },
+          ),
+          // Text('Seach');
+        ),
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: (title != "" && title != null)
+            ? FirebaseFirestore.instance
+                .collection('Projects')
+                .where("Title", arrayContains: title)
+                .snapshots()
+            : FirebaseFirestore.instance.collection("Projects").snapshots(),
+        builder: (context, snapshot) {
+          return (snapshot.connectionState == ConnectionState.waiting)
+              ? Center(child: CircularProgressIndicator())
+              : ListView.builder(
+                  itemCount: snapshot.data?.docs.length,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot data =
+                        snapshot.data?.docs[index] as DocumentSnapshot<Object?>;
+                    return Card(
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            data['Name'],
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Text(
+                            data['Title'],
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+        },
+      ),
+    );
+  }
+}
+
+//return Scaffold(
+/* body: SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(15),
         child: Column(
@@ -68,19 +118,22 @@ class _SearchPageState extends State<SearchPage> {
                 labelText: 'Search',
               ),
             ),
+
+
             IconButton(
                 icon: Icon(Icons.search),
-                onPressed: () {
+                onPressed: () async {
                   setState(() {});
                   StreamBuilder(
                     stream: _projectss.snapshots(),
-                    builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                    builder:
+                        (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                       if (streamSnapshot.hasData) {
                         return ListView.builder(
                           itemCount: streamSnapshot.data!.docs.length,
                           itemBuilder: (context, index) {
                             final DocumentSnapshot documentSnapshot =
-                            streamSnapshot.data!.docs[index];
+                                streamSnapshot.data!.docs[index];
                             return Card(
                               margin: const EdgeInsets.all(10),
                               child: ListTile(
@@ -99,7 +152,7 @@ class _SearchPageState extends State<SearchPage> {
                         child: CircularProgressIndicator(),
                       );
                     },
-                  )
+                  );
                 }),
 
             //filter icon
@@ -112,7 +165,7 @@ class _SearchPageState extends State<SearchPage> {
 
             //,
 
-            /*Container(
+            */ /*Container(
               color: Color(0xffEFEDF0),
               height: 80,
               child: Row(children: <Widget>[
@@ -123,10 +176,28 @@ class _SearchPageState extends State<SearchPage> {
                 const Text("Chasya Abakah",
                     style: TextStyle(color: Colors.black, fontSize: 25)),
               ]),
-            ),*/
+            ),*/ /*
           ],
         ),
       ),
     ));
   }
-}
+}*/
+
+/*class Gigs {
+  final String title;
+  final String name;
+  final String description;
+
+  Gigs.fromDocumet(DocumentSnapshot documentSnapshot) {
+    return Gigs(
+        title: documentSnapshot['Title'],
+        name: documentSnapshot['Name'],
+        description: documentSnapshot['Description']);
+  }
+
+  @override
+  String toString() {
+    return 'Title: $title, Name: $name, Description: $description';
+  }
+}*/
