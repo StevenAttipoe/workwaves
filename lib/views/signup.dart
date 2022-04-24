@@ -77,6 +77,48 @@ class _SignUpState extends State<SignUp> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           const Text(
+                            'Full Name',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 6,
+                                      offset: Offset(0, 2))
+                                ]),
+                            height: 60,
+                            child: TextField(
+                              obscureText: true,
+                              controller: _passwordController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.only(top: 14),
+                                prefixIcon: Icon(Icons.account_box,
+                                    color: Color(0xffffffff)),
+                                hintText: 'Full Name',
+                                hintStyle: TextStyle(color: Colors.white),
+                                filled: true,
+                                fillColor: Color(0xff9A9A9A),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
                             'Email',
                             style: TextStyle(
                                 color: Colors.white,
@@ -148,6 +190,90 @@ class _SignUpState extends State<SignUp> {
                                 prefixIcon:
                                     Icon(Icons.lock, color: Color(0xffffffff)),
                                 hintText: 'Password',
+                                hintStyle: TextStyle(color: Colors.white),
+                                filled: true,
+                                fillColor: Color(0xff9A9A9A),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Phone',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 6,
+                                      offset: Offset(0, 2))
+                                ]),
+                            height: 60,
+                            child: TextField(
+                              obscureText: true,
+                              controller: _passwordController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.only(top: 14),
+                                prefixIcon: Icon(Icons.add_ic_call,
+                                    color: Color(0xffffffff)),
+                                hintText: 'Phone',
+                                hintStyle: TextStyle(color: Colors.white),
+                                filled: true,
+                                fillColor: Color(0xff9A9A9A),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Role',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 6,
+                                      offset: Offset(0, 2))
+                                ]),
+                            height: 60,
+                            child: TextField(
+                              obscureText: true,
+                              controller: _passwordController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.only(top: 14),
+                                prefixIcon:
+                                    Icon(Icons.work, color: Color(0xffffffff)),
+                                hintText: 'Role',
                                 hintStyle: TextStyle(color: Colors.white),
                                 filled: true,
                                 fillColor: Color(0xff9A9A9A),
