@@ -79,7 +79,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             SizedBox(height: 15),
             Align(
-              alignment: Alignment.centerLeft,
               child: Padding(
                 padding: EdgeInsets.only(left: 16),
                 child: Column(
@@ -87,7 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Text(
                       email,
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
