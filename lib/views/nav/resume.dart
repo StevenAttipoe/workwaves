@@ -15,23 +15,44 @@ class ResumePage extends StatefulWidget {
 }
 
 class _ResumePageState extends State<ResumePage> {
-  late List<ChartData> data;
-  late TooltipBehavior _tooltip;
-  final CollectionReference _projects =
-      FirebaseFirestore.instance.collection('project-info');
-  var collection = FirebaseFirestore.instance.collection('project-info');
-
-  @override
-  void initState() {
-    data = [
+  late List<ChartData> data = [
       ChartData('CHN', 12),
       ChartData('GER', 15),
       ChartData('RUS', 30),
       ChartData('BRZ', 6.4),
       ChartData('IND', 14)
     ];
+  late TooltipBehavior _tooltip;
+
+  var _projects = FirebaseFirestore.instance;
+  String uid = FirebaseAuth.instance.currentUser!.uid.toString();
+    late List projectsData = [];
+
+    // List<ChartData> data = [
+    //   ChartData('CHN', 12),
+    //   ChartData('GER', 15),
+    //   ChartData('RUS', 30),
+    //   ChartData('BRZ', 6.4),
+    //   ChartData('IND', 14)
+    // ];
+
+
+  @override
+  void initState() {
     _tooltip = TooltipBehavior(enable: true);
     super.initState();
+    getData();
+  }
+
+
+  Future<void> getData() async {
+    QuerySnapshot querySnapshot =
+        await _projects.collection('project-info').doc('5jCxXY2bQGuOIqVGIy9n').collection('All-Projects').get();
+
+    setState(() {
+      projectsData = querySnapshot.docs.map((doc) => doc.data()).toList();
+      // data  = allData[0];
+    });
   }
 
   @override
@@ -120,59 +141,43 @@ class _ResumePageState extends State<ResumePage> {
       SingleChildScrollView(
         child: Column(
           children: [
-            StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              stream: collection.doc('5jCxXY2bQGuOIqVGIy9n').snapshots(),
-              builder: (_, snapshot) {
-                if (snapshot.hasError) return Text('Error = ${snapshot.error}');
-
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.data()!.length,
-                    itemBuilder: (context, index) {
-                      final Map<String, dynamic>? documentSnapshot =
-                          snapshot.data!.data();
-                      print(documentSnapshot);
-                      return ListTile(
-                        title: Text(documentSnapshot!['contact_name']),
-                        subtitle: Text(documentSnapshot['project_name']),
-                        trailing: Text(documentSnapshot['status']),
-                      );
-                    },
+            ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: projectsData.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(projectsData[index]['contact_name']),
+                    subtitle: Text(projectsData[index]['project_name']),
+                    trailing: Text(projectsData[index]['status']),
                   );
-                }
+                }),
+            // StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+            //   stream: collection.doc('5jCxXY2bQGuOIqVGIy9n').snapshots(),
+            //   builder: (_, snapshot) {
+            //     if (snapshot.hasData) {
+            //       return ListView.builder(
+            //         scrollDirection: Axis.vertical,
+            //         shrinkWrap: true,
+            //         itemCount: snapshot.data!.data()!.length,
+            //         itemBuilder: (context, index) {
+            //           final Map<String, dynamic>? documentSnapshot =
+            //               snapshot.data!.data();
+            //           print(snapshot.data!.data()!.length);
+            //           return ListTile(
+            //             title: Text(documentSnapshot!['contact_name']),
+            //             subtitle: Text(documentSnapshot['project_name']),
+            //             trailing: Text(documentSnapshot['status']),
+            //           );
+            //         },
+            //       );
+            //     } else {
+            //       Text('Error = ${snapshot.error}');
+            //     }
 
-                return const Center(child: CircularProgressIndicator());
-              },
-            )
-            //       StreamBuilder(
-            //           stream:  _projects.snapshots(),
-            //           builder: (context,AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-            //             if (streamSnapshot.hasData) {
-            //               return ListView.builder(
-            //                 scrollDirection: Axis.vertical,
-            //                 shrinkWrap: true,
-            //                 itemCount: streamSnapshot.data!.docs.length,
-            //                 itemBuilder: (context, index) {
-            //                   final DocumentSnapshot documentSnapshot =
-            //                       streamSnapshot.data!.docs[index];
-            //                   return ListTile(
-            //                       title: Text(documentSnapshot['contact_name']),
-            //                       subtitle:Text(documentSnapshot['project_name']),
-            //                       trailing: Text(documentSnapshot['status']),
-
-            //                   );
-            //                 },
-            //               );
-            //             }
-            //             return const Center(
-            //               child: CircularProgressIndicator(),
-            //             );
-            //           }),
-            //     ],
-            //   ),
-            // ),
+            //     return const Center(child: CircularProgressIndicator());
+            //   },
+            // )
           ],
         ),
       ),

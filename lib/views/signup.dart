@@ -16,11 +16,11 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _roleController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _roleController = TextEditingController();
 
   @override
   void initState() {
@@ -61,9 +61,7 @@ class _SignUpState extends State<SignUp> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      // Image.asset(
-                      //   'assets/icons/workwaves.png',
-                      // ),
+                      const SizedBox(height: 25),
                       const Text(
                         'Sign-Up',
                         style: TextStyle(
@@ -71,12 +69,6 @@ class _SignUpState extends State<SignUp> {
                             fontSize: 40,
                             fontWeight: FontWeight.bold),
                       ),
-                      // Row(
-                      //   children: [
-                      //     buildFname(),
-                      //     buildLname(),
-                      //   ],
-                      // ),
                       const SizedBox(height: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,7 +240,7 @@ class _SignUpState extends State<SignUp> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           const Text(
-                            'Role',
+                            'Occupation',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -288,19 +280,6 @@ class _SignUpState extends State<SignUp> {
                         padding: EdgeInsets.symmetric(vertical: 25),
                         width: double.infinity,
                         child: ElevatedButton(
-                          // onPressed: () async => {
-                          //   await FirebaseAuth.instance
-                          //       .createUserWithEmailAndPassword(
-                          //           email:
-                          //               _emailController.text.toString().trim(),
-                          //           password: _passwordController.text
-                          //               .toString()
-                          //               .trim()),
-                          //   Navigator.pushReplacement(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           builder: (context) => Success_Screen()))
-                          // },
                           onPressed: () async {
                             try {
                               await Firebase.initializeApp();
