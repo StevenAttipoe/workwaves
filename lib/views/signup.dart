@@ -5,6 +5,7 @@ import 'package:workwaves/views/loginScreen.dart';
 import 'package:workwaves/views/widgets/login_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:workwaves/model/user.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -14,8 +15,12 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _roleController = TextEditingController();
 
   @override
   void initState() {
@@ -56,9 +61,9 @@ class _SignUpState extends State<SignUp> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset(
-                        'assets/icons/workwaves.png',
-                      ),
+                      // Image.asset(
+                      //   'assets/icons/workwaves.png',
+                      // ),
                       const Text(
                         'Sign-Up',
                         style: TextStyle(
@@ -72,6 +77,47 @@ class _SignUpState extends State<SignUp> {
                       //     buildLname(),
                       //   ],
                       // ),
+                      const SizedBox(height: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Full Name',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 6,
+                                      offset: Offset(0, 2))
+                                ]),
+                            height: 60,
+                            child: TextField(
+                              controller: _nameController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.only(top: 14),
+                                prefixIcon: Icon(Icons.account_box,
+                                    color: Color(0xffffffff)),
+                                hintText: 'Full Name',
+                                hintStyle: TextStyle(color: Colors.white),
+                                filled: true,
+                                fillColor: Color(0xff9A9A9A),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                       const SizedBox(height: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,19 +202,137 @@ class _SignUpState extends State<SignUp> {
                           )
                         ],
                       ),
+                      const SizedBox(height: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Phone',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 6,
+                                      offset: Offset(0, 2))
+                                ]),
+                            height: 60,
+                            child: TextField(
+                              controller: _phoneController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.only(top: 14),
+                                prefixIcon: Icon(Icons.add_ic_call,
+                                    color: Color(0xffffffff)),
+                                hintText: 'Phone',
+                                hintStyle: TextStyle(color: Colors.white),
+                                filled: true,
+                                fillColor: Color(0xff9A9A9A),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Role',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.black26,
+                                      blurRadius: 6,
+                                      offset: Offset(0, 2))
+                                ]),
+                            height: 60,
+                            child: TextField(
+                              controller: _roleController,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.only(top: 14),
+                                prefixIcon:
+                                    Icon(Icons.work, color: Color(0xffffffff)),
+                                hintText: 'Role',
+                                hintStyle: TextStyle(color: Colors.white),
+                                filled: true,
+                                fillColor: Color(0xff9A9A9A),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                       Container(
                         padding: EdgeInsets.symmetric(vertical: 25),
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () async => {
-                            await FirebaseAuth.instance
-                                .createUserWithEmailAndPassword(
-                                    email: _emailController.text.toString().trim(),
-                                    password: _passwordController.text.toString().trim()),
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Success_Screen()))
+                          // onPressed: () async => {
+                          //   await FirebaseAuth.instance
+                          //       .createUserWithEmailAndPassword(
+                          //           email:
+                          //               _emailController.text.toString().trim(),
+                          //           password: _passwordController.text
+                          //               .toString()
+                          //               .trim()),
+                          //   Navigator.pushReplacement(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           builder: (context) => Success_Screen()))
+                          // },
+                          onPressed: () async {
+                            try {
+                              await Firebase.initializeApp();
+                              UserCredential user = await FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                              );
+                              User updateUser =
+                                  FirebaseAuth.instance.currentUser!;
+                              updateUser.updateProfile(
+                                displayName: _nameController.text,
+                              );
+                              userSetup(
+                                  _emailController.text,
+                                  _nameController.text,
+                                  _phoneController.text,
+                                  _roleController.text);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Success_Screen()));
+                            } on FirebaseAuthException catch (e) {
+                              if (e.code == 'weak-password') {
+                                print('The password provided is too weak.');
+                              } else if (e.code == 'email-already-in-use') {
+                                print(
+                                    'The account already exists for that email.');
+                              }
+                            } catch (e) {
+                              print(e.toString());
+                            }
                           },
                           style: ButtonStyle(
                               elevation: MaterialStateProperty.all(5),
