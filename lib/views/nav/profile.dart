@@ -67,8 +67,8 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Padding(
               padding: EdgeInsets.only(left: 16),
               child: Column(
-                children: [
-                  Text(
+                children:const [
+                   Text(
                     'Description',
                     style: TextStyle(
                       fontSize: 22,
