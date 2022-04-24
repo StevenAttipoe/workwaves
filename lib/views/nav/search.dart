@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:workwaves/views/nav/chat.dart';
 import 'package:workwaves/views/nav/profile.dart';
@@ -12,6 +13,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+    final CollectionReference _projects = FirebaseFirestore.instance.collection('Projects');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +24,7 @@ class _SearchPageState extends State<SearchPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            const Text(
               'Search',
               style: TextStyle(
                 color: Color(0x0E1C21),
@@ -30,10 +33,46 @@ class _SearchPageState extends State<SearchPage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 50),
-            TextFormField(
-              decoration: InputDecoration(
+            const SizedBox(height: 50),
+             TextFormField(
+              decoration: const InputDecoration(
                 labelText: 'Name',
+              ),
+            ),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height:15),
+                  StreamBuilder(
+                      stream:  _projects.snapshots(),
+                      builder: (context,AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                        if (streamSnapshot.hasData) {
+                          return ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: streamSnapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              final DocumentSnapshot documentSnapshot =
+                                  streamSnapshot.data!.docs[index];
+                              return ListTile(
+                                  title: Text(
+                                    documentSnapshot['Name'],
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20
+                                    ),),
+                                  subtitle:Text(documentSnapshot['Description']),
+                                  trailing: IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
+                                
+                              );
+                            },
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }),
+                ],
               ),
             ),
             //filter icon
