@@ -5,7 +5,7 @@ import 'package:workwaves/views/nav/profile.dart';
 import 'package:workwaves/views/nav/resume.dart';
 import 'package:workwaves/views/nav/search.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:workwaves/views/subpages/view_project.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -15,96 +15,69 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-    final CollectionReference _projects = FirebaseFirestore.instance.collection('Projects');
+  final CollectionReference _projects =
+      FirebaseFirestore.instance.collection('Projects');
+  TextEditingController _searchController = TextEditingController();
+  List<String> glossarList =
+//list to hold all projects in the database
+      [];
+
+  List<String> glossarListOnSearch = [];
+
+  CollectionReference _collectionRef =
+      FirebaseFirestore.instance.collection('Projects');
+  //converting to list 1
+  Future<List<Object?>> getData() async {
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+
+    // Get data from docs and convert map to List
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    //print(allData);
+    return allData;
+  }
+
+  //converting to lists 2
+  getSearchItems(AsyncSnapshot<QuerySnapshot> snapshot) {
+    final projectData = snapshot.data?.docs
+        .map((doc) => new ListTile(
+            title: new Text(doc["Name"]),
+            subtitle: new Text(doc["Title"].toString())))
+        .toList();
+
+    return projectData;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          icon: Icon(Icons.search_outlined, color: Colors.white70),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: Card(
-          child: TextField(
-            decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search), hintText: 'Search...'),
-            onChanged: (val) {
-              setState(() {
-                title = val;
-              });
-            },
-          ),
-          // Text('Seach');
-        ),
-      ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: (title != "" && title != null)
-            ? FirebaseFirestore.instance
-                .collection('Projects')
-                .where("Title", arrayContains: title)
-                .snapshots()
-            : FirebaseFirestore.instance.collection("Projects").snapshots(),
-        builder: (context, snapshot) {
-          return (snapshot.connectionState == ConnectionState.waiting)
-              ? Center(child: CircularProgressIndicator())
-              : ListView.builder(
-                  itemCount: snapshot.data?.docs.length,
-                  itemBuilder: (context, index) {
-                    DocumentSnapshot data =
-                        snapshot.data?.docs[index] as DocumentSnapshot<Object?>;
-                    return Card(
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            data['Name'],
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 25,
-                          ),
-                          Text(
-                            data['Title'],
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
-        },
-      ),
-    );
-  }
-}
-
-//return Scaffold(
-/* body: SafeArea(
+        body: SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'Search',
-              style: TextStyle(
-                color: Color(0x0E1C21),
-                //color: Color(0xff100e0e),
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+            Row(children: const <Widget>[
+              const Text(
+                'Search',
+                style: TextStyle(
+                  color: Colors.black,
+                  //color: Color(0xff100e0e),
+                  fontSize: 35,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(height: 50),
-             TextFormField(
+            ]),
+            const SizedBox(height: 20),
+            TextFormField(
+              onChanged: (value) {
+                setState(() {
+                  /* stream:_projects.snapshots();
+                  glossarListOnSearch = getSearchItems().where((element) =>
+                      element.toLowerCase().contains(value.toLowerCase()));*/
+                });
+              },
+              controller: _searchController,
               decoration: const InputDecoration(
                 labelText: 'Name',
               ),
@@ -112,10 +85,11 @@ class _SearchPageState extends State<SearchPage> {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(height:15),
+                  const SizedBox(height: 15),
                   StreamBuilder(
-                      stream:  _projects.snapshots(),
-                      builder: (context,AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                      stream: _projects.snapshots(),
+                      builder: (context,
+                          AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                         if (streamSnapshot.hasData) {
                           return ListView.builder(
                             scrollDirection: Axis.vertical,
@@ -124,16 +98,31 @@ class _SearchPageState extends State<SearchPage> {
                             itemBuilder: (context, index) {
                               final DocumentSnapshot documentSnapshot =
                                   streamSnapshot.data!.docs[index];
+
                               return ListTile(
-                                  title: Text(
+                                title: TextButton(
+                                  onPressed: () {
+                                    /* react to the tile being pressed */
+                                    //Navigator.pushNamed(context, '/SearchPage');
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ViewProject()),
+                                    );
+                                  },
+                                  child: Text(
                                     documentSnapshot['Name'],
                                     style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20
-                                    ),),
-                                  subtitle:Text(documentSnapshot['Description']),
-                                  trailing: IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
-                                
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  documentSnapshot['Description'],
+                                ),
+                                trailing: IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.add)),
                               );
                             },
                           );
@@ -145,49 +134,9 @@ class _SearchPageState extends State<SearchPage> {
                 ],
               ),
             ),
-            //filter icon
-            Row(children: <Widget>[
-              const Icon(
-                Icons.filter_list,
-                size: 40,
-              )
-            ]),
-
-            //,
-
-            */ /*Container(
-              color: Color(0xffEFEDF0),
-              height: 80,
-              child: Row(children: <Widget>[
-                Icon(
-                  CupertinoIcons.tortoise_fill,
-                  size: 30,
-                ),
-                const Text("Chasya Abakah",
-                    style: TextStyle(color: Colors.black, fontSize: 25)),
-              ]),
-            ),*/ /*
           ],
         ),
       ),
     ));
   }
-}*/
-
-/*class Gigs {
-  final String title;
-  final String name;
-  final String description;
-
-  Gigs.fromDocumet(DocumentSnapshot documentSnapshot) {
-    return Gigs(
-        title: documentSnapshot['Title'],
-        name: documentSnapshot['Name'],
-        description: documentSnapshot['Description']);
-  }
-
-  @override
-  String toString() {
-    return 'Title: $title, Name: $name, Description: $description';
-  }
-}*/
+}
