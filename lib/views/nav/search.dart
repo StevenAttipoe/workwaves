@@ -72,6 +72,34 @@ class _SearchPageState extends State<SearchPage> {
                 icon: Icon(Icons.search),
                 onPressed: () {
                   setState(() {});
+                  StreamBuilder(
+                    stream: _projectss.snapshots(),
+                    builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                      if (streamSnapshot.hasData) {
+                        return ListView.builder(
+                          itemCount: streamSnapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            final DocumentSnapshot documentSnapshot =
+                            streamSnapshot.data!.docs[index];
+                            return Card(
+                              margin: const EdgeInsets.all(10),
+                              child: ListTile(
+                                title: Text(documentSnapshot['Title']),
+                                subtitle: Text(documentSnapshot['Name']),
+                                trailing: SizedBox(
+                                  width: 100,
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }
+
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  )
                 }),
 
             //filter icon
@@ -81,34 +109,8 @@ class _SearchPageState extends State<SearchPage> {
                 size: 40,
               )
             ]),
-            StreamBuilder(
-              stream: _projectss.snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                if (streamSnapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: streamSnapshot.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      final DocumentSnapshot documentSnapshot =
-                          streamSnapshot.data!.docs[index];
-                      return Card(
-                        margin: const EdgeInsets.all(10),
-                        child: ListTile(
-                          title: Text(documentSnapshot['Title']),
-                          subtitle: Text(documentSnapshot['Name']),
-                          trailing: SizedBox(
-                            width: 100,
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }
 
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-            ),
+            //,
 
             /*Container(
               color: Color(0xffEFEDF0),
