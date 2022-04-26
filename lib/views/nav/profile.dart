@@ -148,7 +148,47 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Widget buildReviews() => Container(
+  Future<void> fetch() async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser;
+    final String? uid = firebaseUser?.uid.toString();
+
+    // print("This is " + uid! + " end ");
+
+    if (firebaseUser != null) {
+      var document = await FirebaseFirestore.instance
+          .collection('users')
+          .where('uid', isEqualTo: uid)
+          .get();
+
+      users = document.docs.map((doc) => doc.data()).toList();
+      data = users[0]['role'];
+
+      name = users[0]['fullName'];
+      email = users[0]['email'];
+      phone = users[0]['phone'];
+      role = users[0]['role'];
+      print(name);
+
+      // document.get().then((ds) {
+      //   name = ds.data.docs[index].data()!["fullName"];
+      //   role = ds.data()!["role"];
+      //   email = ds.data()!["email"];
+      //   phone = ds.data()!["phone"];
+      // }
+      // UserQuery.get().then(
+      //   (ds) {
+      //     name = ds.['fullName'];
+      //     email = ds.data['email'];
+      //     role = ds.metadata['role'];
+      //     phone = ds['phone'];
+      //   },
+      // ).catchError((e) {
+      //   print(e);
+      // })
+    }
+  }
+
+Widget buildReviews() => Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -202,3 +242,4 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
 }
+
