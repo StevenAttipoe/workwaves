@@ -16,26 +16,17 @@ class ResumePage extends StatefulWidget {
 
 class _ResumePageState extends State<ResumePage> {
   late List<ChartData> data = [
-      ChartData('CHN', 12),
-      ChartData('GER', 15),
-      ChartData('RUS', 30),
-      ChartData('BRZ', 6.4),
-      ChartData('IND', 14)
-    ];
+    ChartData('CHN', 12),
+    ChartData('GER', 15),
+    ChartData('RUS', 30),
+    ChartData('BRZ', 6.4),
+    ChartData('IND', 14)
+  ];
   late TooltipBehavior _tooltip;
 
   var _projects = FirebaseFirestore.instance;
   String uid = FirebaseAuth.instance.currentUser!.uid.toString();
-    late List projectsData = [];
-
-    // List<ChartData> data = [
-    //   ChartData('CHN', 12),
-    //   ChartData('GER', 15),
-    //   ChartData('RUS', 30),
-    //   ChartData('BRZ', 6.4),
-    //   ChartData('IND', 14)
-    // ];
-
+  late List projectsData = [];
 
   @override
   void initState() {
@@ -44,14 +35,15 @@ class _ResumePageState extends State<ResumePage> {
     getData();
   }
 
-
   Future<void> getData() async {
-    QuerySnapshot querySnapshot =
-        await _projects.collection('project-info').doc('5jCxXY2bQGuOIqVGIy9n').collection('All-Projects').get();
+    QuerySnapshot querySnapshot = await _projects
+        .collection('project-info')
+        .doc(uid)
+        .collection('All-Projects')
+        .get();
 
     setState(() {
       projectsData = querySnapshot.docs.map((doc) => doc.data()).toList();
-      // data  = allData[0];
     });
   }
 
@@ -118,7 +110,7 @@ class _ResumePageState extends State<ResumePage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text(
-              "Active Projects",
+              "Active Project",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
             ElevatedButton(
@@ -149,38 +141,62 @@ class _ResumePageState extends State<ResumePage> {
                   return ListTile(
                     title: Text(projectsData[index]['contact_name']),
                     subtitle: Text(projectsData[index]['project_name']),
-                    trailing: Text(projectsData[index]['status']),
+                    trailing: IconButton(
+                        onPressed: () {
+                          showDeleteDialog(context);
+                        },
+                        icon: const Icon(Icons.delete)),
                   );
                 }),
-            // StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-            //   stream: collection.doc('5jCxXY2bQGuOIqVGIy9n').snapshots(),
-            //   builder: (_, snapshot) {
-            //     if (snapshot.hasData) {
-            //       return ListView.builder(
-            //         scrollDirection: Axis.vertical,
-            //         shrinkWrap: true,
-            //         itemCount: snapshot.data!.data()!.length,
-            //         itemBuilder: (context, index) {
-            //           final Map<String, dynamic>? documentSnapshot =
-            //               snapshot.data!.data();
-            //           print(snapshot.data!.data()!.length);
-            //           return ListTile(
-            //             title: Text(documentSnapshot!['contact_name']),
-            //             subtitle: Text(documentSnapshot['project_name']),
-            //             trailing: Text(documentSnapshot['status']),
-            //           );
-            //         },
-            //       );
-            //     } else {
-            //       Text('Error = ${snapshot.error}');
-            //     }
-
-            //     return const Center(child: CircularProgressIndicator());
-            //   },
-            // )
           ],
         ),
       ),
     ])));
+  }
+
+  void showDeleteDialog(context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Delete Gig'),
+          content: const SingleChildScrollView(
+            child: Text('Are you sure you want to delete this gig?'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Yes',
+                style: TextStyle(color: Color(0xFFFFFFFF)),
+              ),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.green)),
+              onPressed: () {
+                FirebaseFirestore.instance
+                    .collection('project-info')
+                    .doc(uid)
+                    .collection('All-Projects')
+                    .doc(uid)
+                    .delete();
+                getData();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text(
+                'No',
+                style: TextStyle(color: Color(0xFFFFFFFF)),
+              ),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.red)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

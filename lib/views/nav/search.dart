@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:workwaves/model/project_model.dart';
 import 'package:workwaves/views/nav/chat.dart';
@@ -14,8 +15,10 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final CollectionReference _projects =
-      FirebaseFirestore.instance.collection('Projects');
+  String uid = FirebaseAuth.instance.currentUser!.uid.toString();
+
+  // final CollectionReference _projects =
+  //     FirebaseFirestore.instance.collection('Projects');
   final _projectSearch = FirebaseFirestore.instance;
   late List projectsData = [];
 
@@ -29,15 +32,8 @@ class _SearchPageState extends State<SearchPage> {
     QuerySnapshot querySnapshot =
         await _projectSearch.collection('Projects').get();
 
-    List<Projects> result = [];
-    querySnapshot.docs.forEach((doc) {
-      // result.add(Projects.fromJson(doc .data()));
-    });
-
     setState(() {
-      projectsData = result;
-      // projectsData =
-      //     querySnapshot.docs.map<Projects>((doc) => doc.data()).toList();
+      projectsData = querySnapshot.docs.map((doc) => doc.data()).toList();
     });
   }
 
@@ -50,26 +46,16 @@ class _SearchPageState extends State<SearchPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'Search',
-              style: TextStyle(
-                color: Color(0x0E1C21),
-                //color: Color(0xff100e0e),
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 50),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Search',
-              ),
-              // onChanged: searchBook,
-            ),
             SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 10),
+                  const Text("Gigs Available",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25
+                  ),),
+                  const SizedBox(height: 10),
                   ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
@@ -83,38 +69,22 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                           subtitle: Text(projectsData[index]['Description']),
                           trailing: IconButton(
-                              onPressed: () {}, icon: const Icon(Icons.add)),
+                              onPressed: () {
+                               var document =  FirebaseFirestore.instance;
+                                    document
+                                    .collection('project-info')
+                                    .doc(uid)
+                                    .collection('All-Projects')
+                                    .doc(uid)
+                                    .set({
+                                      'contact_name': projectsData[index]['Name'],
+                                      'project_name': projectsData[index]['Description']
+                                });
+                                showAddDialog(context, projectsData[index]['Name']);
+                              },
+                              icon: const Icon(Icons.add)),
                         );
                       }),
-                  // StreamBuilder(
-                  //     stream:  _projects.snapshots(),
-                  //     builder: (context,AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                  //       if (streamSnapshot.hasData) {
-                  //         return ListView.builder(
-                  //           scrollDirection: Axis.vertical,
-                  //           shrinkWrap: true,
-                  //           itemCount: streamSnapshot.data!.docs.length,
-                  //           itemBuilder: (context, index) {
-                  //             final DocumentSnapshot documentSnapshot =
-                  //                 streamSnapshot.data!.docs[index];
-                  //             return ListTile(
-                  //                 title: Text(
-                  //                   documentSnapshot['Name'],
-                  //                   style: const TextStyle(
-                  //                     fontWeight: FontWeight.bold,
-                  //                     fontSize: 20
-                  //                   ),),
-                  //                 subtitle:Text(documentSnapshot['Description']),
-                  //                 trailing: IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
-
-                  //             );
-                  //           },
-                  //         );
-                  //       }
-                  //       return const Center(
-                  //         child: CircularProgressIndicator(),
-                  //       );
-                  //     }),
                 ],
               ),
             ),
@@ -124,14 +94,31 @@ class _SearchPageState extends State<SearchPage> {
     ));
   }
 
-  // void searchBook(String value) {
-  //   final suggestions = projectsData.where((book) {
-  //     final bookName = projectsData["Name"].toLowerCase();
-
-  //     final input = value.toLowerCase();
-
-  //     return bookName.contains(input);
-  //   }).toList();
-  //   setState(() => projectsData = suggestions);
-  // }
+   void showAddDialog(context,String name) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Gig Added'),
+          content:  SingleChildScrollView(
+            child: Text('You have successfully added the gig: ' + name),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'Okay',
+                style: TextStyle(color: Color(0xFFFFFFFF)),
+              ),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.black)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

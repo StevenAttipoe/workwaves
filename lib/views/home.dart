@@ -74,9 +74,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.search,
+              Icons.auto_graph_rounded ,
               ),
-            label: 'Search',
+            label: 'Gigs',
           ),
           BottomNavigationBarItem(
             icon: Icon(
