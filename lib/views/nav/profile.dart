@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:workwaves/views/loginScreen.dart';
@@ -11,8 +12,16 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  List users = [];
+  var data = '';
+
   final double coverHeight = 280;
   final double profileHeight = 144;
+
+  late var name = '';
+  late var email = '';
+  late var phone = '';
+  late var role = '';
 
   @override
   Widget build(BuildContext context) {
@@ -44,59 +53,108 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget buildContent() => Column(
-        children: <Widget>[
-          SizedBox(height: 60),
-          Text(
-            'Jesse Srodah',
-            style: TextStyle(
-              fontSize: 20,
-            ),
-          ),
-          SizedBox(height: 5),
-          Text(
-            'UX Designer',
-            style: TextStyle(
-              fontSize: 18,
-              color: Color(0xff99879D),
-            ),
-          ),
-          SizedBox(height: 15),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.only(left: 16),
-              child: Column(
-                children:const [
-                   Text(
-                    'Description',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 15),
-                  Text(
-                    'My name is Jesse, I’m a young designer from Ghana. I school at Ashesi University and I am currently in my third year. I offer Computer Science.',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Color(0xff99879D),
-                    ),
-                  ),
-                ],
+  Widget buildContent() {
+    return Container(
+        child: FutureBuilder(
+      future: fetch(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done)
+          return Text("Loading data ... Please wait");
+        return Column(
+          children: <Widget>[
+            SizedBox(height: 60),
+            Text(
+              name,
+              style: TextStyle(
+                fontSize: 20,
               ),
             ),
-          ),
-        ],
-      );
+            SizedBox(height: 5),
+            Text(
+              role,
+              style: TextStyle(
+                fontSize: 18,
+                color: Color(0xff99879D),
+              ),
+            ),
+            SizedBox(height: 15),
+            Align(
+              child: Padding(
+                padding: EdgeInsets.only(left: 16),
+                child: Column(
+                  children: [
+                    Text(
+                      email,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    Text(
+                      phone,
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Color(0xff99879D),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    ));
+  }
 
-  Widget buildReviews() => Container(
+  Future<void> fetch() async {
+    final firebaseUser = await FirebaseAuth.instance.currentUser;
+    final String? uid = firebaseUser?.uid.toString();
+
+    // print("This is " + uid! + " end ");
+
+    if (firebaseUser != null) {
+      var document = await FirebaseFirestore.instance
+          .collection('users')
+          .where('uid', isEqualTo: uid)
+          .get();
+
+      users = document.docs.map((doc) => doc.data()).toList();
+      data = users[0]['role'];
+
+      name = users[0]['fullName'];
+      email = users[0]['email'];
+      phone = users[0]['phone'];
+      role = users[0]['role'];
+      print(name);
+
+      // document.get().then((ds) {
+      //   name = ds.data.docs[index].data()!["fullName"];
+      //   role = ds.data()!["role"];
+      //   email = ds.data()!["email"];
+      //   phone = ds.data()!["phone"];
+      // }
+      // UserQuery.get().then(
+      //   (ds) {
+      //     name = ds.['fullName'];
+      //     email = ds.data['email'];
+      //     role = ds.metadata['role'];
+      //     phone = ds['phone'];
+      //   },
+      // ).catchError((e) {
+      //   print(e);
+      // })
+    }
+  }
+
+Widget buildReviews() => Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
               padding: EdgeInsets.only(left: 16),
-              child: Text('64 Reviews'),
+              child: Text('4 Reviews'),
             ),
             ElevatedButton(
                 onPressed: () {
@@ -144,3 +202,4 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       );
 }
+
