@@ -221,32 +221,4 @@ class _SearchPageState extends State<SearchPage> {
       ),
     ));
   }
-
-  void showAddDialog(context, String name) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Gig Added'),
-          content: SingleChildScrollView(
-            child: Text('You have successfully added the gig: ' + name),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text(
-                'Okay',
-                style: TextStyle(color: Color(0xFFFFFFFF)),
-              ),
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.black)),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
