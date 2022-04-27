@@ -27,6 +27,7 @@ class _ResumePageState extends State<ResumePage> {
   var _projects = FirebaseFirestore.instance;
   String uid = FirebaseAuth.instance.currentUser!.uid.toString();
   late List projectsData = [];
+  late QuerySnapshot querySnapshot;
 
   @override
   void initState() {
@@ -36,12 +37,13 @@ class _ResumePageState extends State<ResumePage> {
   }
 
   Future<void> getData() async {
-    QuerySnapshot querySnapshot = await _projects
+     querySnapshot = await _projects
         .collection('project-info')
         .doc(uid)
         .collection('All-Projects')
         .get();
 
+    print(querySnapshot.docs[0].reference);
     setState(() {
       projectsData = querySnapshot.docs.map((doc) => doc.data()).toList();
     });
@@ -51,110 +53,125 @@ class _ResumePageState extends State<ResumePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-            child: Column(children: [
-      const Padding(
-        padding: EdgeInsets.only(left: 10, top: 10),
-        child: Text(
-          "Resume",
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-        ),
-      ),
-      Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: SizedBox(
-                width: MediaQuery.of(context).size.width * .50,
-                child: SfCartesianChart(
-                    plotAreaBorderWidth: 0,
-                    primaryXAxis: CategoryAxis(
-                        majorGridLines: const MajorGridLines(width: 0),
-                        axisLine: const AxisLine(width: 0),
-                        isVisible: false),
-                    primaryYAxis: NumericAxis(
-                        minimum: 0,
-                        maximum: 40,
-                        interval: 10,
-                        majorGridLines: const MajorGridLines(width: 0),
-                        axisLine: const AxisLine(width: 0),
-                        isVisible: false),
-                    tooltipBehavior: _tooltip,
-                    series: <ColumnSeries<ChartData, String>>[
-                      ColumnSeries<ChartData, String>(
-                          dataSource: data,
-                          xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.y,
-                          color: Colors.orange)
-                    ])),
+            child: SingleChildScrollView(
+      child: Column(children: [
+        const Padding(
+          padding: EdgeInsets.only(left: 10, top: 10),
+          child: Text(
+            "Resume",
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
-          Column(
-            children: const [
-              Text(
-                "Total Gains",
-                style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.orange),
-              ),
-              Text(
-                "20K",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
-              )
-            ],
-          )
-        ],
-      ),
-      Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        ),
+        Row(
           children: [
-            const Text(
-              "Active Project",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width * .50,
+                  child: SfCartesianChart(
+                      plotAreaBorderWidth: 0,
+                      primaryXAxis: CategoryAxis(
+                          majorGridLines: const MajorGridLines(width: 0),
+                          axisLine: const AxisLine(width: 0),
+                          isVisible: false),
+                      primaryYAxis: NumericAxis(
+                          minimum: 0,
+                          maximum: 40,
+                          interval: 10,
+                          majorGridLines: const MajorGridLines(width: 0),
+                          axisLine: const AxisLine(width: 0),
+                          isVisible: false),
+                      tooltipBehavior: _tooltip,
+                      series: <ColumnSeries<ChartData, String>>[
+                        ColumnSeries<ChartData, String>(
+                            dataSource: data,
+                            xValueMapper: (ChartData data, _) => data.x,
+                            yValueMapper: (ChartData data, _) => data.y,
+                            color: Colors.orange)
+                      ])),
             ),
-            ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Color(0xFF000000))),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ActiveProjects()));
-                },
-                child: const Text(
-                  "View All",
-                  style: TextStyle(color: Colors.white),
-                ))
+            Column(
+              children: const [
+                Text(
+                  "Total Gains",
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.orange),
+                ),
+                Text(
+                  "20K",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
+                )
+              ],
+            )
           ],
         ),
-      ),
-      SingleChildScrollView(
-        child: Column(
-          children: [
-            ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: projectsData.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(projectsData[index]['contact_name']),
-                    subtitle: Text(projectsData[index]['project_name']),
-                    trailing: IconButton(
-                        onPressed: () {
-                          showDeleteDialog(context);
-                        },
-                        icon: const Icon(Icons.delete)),
-                  );
-                }),
-          ],
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Active Project",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Color(0xFF000000))),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ActiveProjects()));
+                  },
+                  child: const Text(
+                    "View All",
+                    style: TextStyle(color: Colors.white),
+                  ))
+            ],
+          ),
         ),
-      ),
-    ])));
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              (projectsData.isEmpty)
+                  ? const Padding(
+                      padding: EdgeInsets.only(top: 40.0),
+                      child: Text("No gig in progress"),
+                    )
+                  : const Text(""),
+              ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: projectsData.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(projectsData[index]['contact_name']),
+                          // Text(projectsData[index]['Price'])
+                        ],
+                      ),
+                      subtitle: Text(projectsData[index]['project_name']),
+                      trailing: IconButton(
+                          onPressed: () {
+                            showDeleteDialog(context, index);
+                          },
+                          icon: const Icon(Icons.delete)),
+                    );
+                  }),
+            ],
+          ),
+        ),
+      ]),
+    )));
   }
 
-  void showDeleteDialog(context) async {
+  void showDeleteDialog(context, int index) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -172,13 +189,8 @@ class _ResumePageState extends State<ResumePage> {
               ),
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.green)),
-              onPressed: () {
-                FirebaseFirestore.instance
-                    .collection('project-info')
-                    .doc(uid)
-                    .collection('All-Projects')
-                    .doc(uid)
-                    .delete();
+              onPressed: () async {
+                querySnapshot.docs[index].reference.delete();
                 getData();
                 Navigator.of(context).pop();
               },

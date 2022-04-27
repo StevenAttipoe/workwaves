@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:workwaves/views/map/map.dart';
 import 'package:workwaves/views/nav/profile.dart';
 import 'package:workwaves/views/nav/resume.dart';
 import 'package:workwaves/views/nav/search.dart';
+import 'package:workwaves/views/widgets/project_view.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -9,9 +11,13 @@ class Home extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       title: 'Workwaves',
-      home: MyHomePage(),
+      initialRoute: '/home',
+      routes: {
+        '/home': (context) => const MyHomePage(),
+        '/project': (context) => const ProjectView(),
+      },
     );
   }
 }
@@ -32,7 +38,9 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> widgetOptions = const <Widget>[
     ResumePage(),
     SearchPage(),
+    Map(),
     ProfilePage(),
+    
   ];
 
   void _onItemTapped(int index) {
@@ -51,6 +59,11 @@ class _MyHomePageState extends State<MyHomePage> {
           break;
         case 2:
           {
+            _appBar = 'Map';
+          }
+          break;
+        case 3:
+          {
             _appBar = 'Profile';
           }
           break;
@@ -67,20 +80,31 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items:  const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
+            // backgroundColor: Colors.grey,
             icon: Icon(
               Icons.home,
+              color: Colors.black,
             ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.auto_graph_rounded ,
+              Icons.auto_graph_rounded,
+              color: Colors.black,
               ),
             label: 'Gigs',
           ),
           BottomNavigationBarItem(
             icon: Icon(
+              Icons.map,
+              color: Colors.black,
+            ),
+            label: 'Map',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
               Icons.account_circle,
+              color: Colors.black,
             ),
             label: 'Profile',
           ),
