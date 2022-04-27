@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workwaves/views/map/map.dart';
 import 'package:workwaves/views/nav/profile.dart';
 import 'package:workwaves/views/nav/resume.dart';
 import 'package:workwaves/views/nav/search.dart';
@@ -32,7 +33,9 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> widgetOptions = const <Widget>[
     ResumePage(),
     SearchPage(),
+    Map(),
     ProfilePage(),
+    
   ];
 
   void _onItemTapped(int index) {
@@ -51,6 +54,11 @@ class _MyHomePageState extends State<MyHomePage> {
           break;
         case 2:
           {
+            _appBar = 'Map';
+          }
+          break;
+        case 3:
+          {
             _appBar = 'Profile';
           }
           break;
@@ -67,20 +75,31 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items:  const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
+            // backgroundColor: Colors.grey,
             icon: Icon(
               Icons.home,
+              color: Colors.black,
             ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.auto_graph_rounded ,
+              Icons.auto_graph_rounded,
+              color: Colors.black,
               ),
             label: 'Gigs',
           ),
           BottomNavigationBarItem(
             icon: Icon(
+              Icons.map,
+              color: Colors.black,
+            ),
+            label: 'Map',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
               Icons.account_circle,
+              color: Colors.black,
             ),
             label: 'Profile',
           ),

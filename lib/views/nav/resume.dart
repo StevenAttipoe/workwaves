@@ -133,13 +133,24 @@ class _ResumePageState extends State<ResumePage> {
       SingleChildScrollView(
         child: Column(
           children: [
+              (projectsData.isEmpty)? const Padding(
+                padding:  EdgeInsets.only(top:40.0),
+                child:  Text("No gig in progress"),
+              ): const Text("")
+            ,
             ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 itemCount: projectsData.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(projectsData[index]['contact_name']),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(projectsData[index]['contact_name']),
+                        Text(projectsData[index]['contact_name'])
+                      ],
+                    ),
                     subtitle: Text(projectsData[index]['project_name']),
                     trailing: IconButton(
                         onPressed: () {

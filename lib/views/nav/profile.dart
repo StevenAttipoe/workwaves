@@ -112,8 +112,6 @@ class _ProfilePageState extends State<ProfilePage> {
     final firebaseUser = await FirebaseAuth.instance.currentUser;
     final String? uid = firebaseUser?.uid.toString();
 
-    // print("This is " + uid! + " end ");
-
     if (firebaseUser != null) {
       var document = await FirebaseFirestore.instance
           .collection('users')
@@ -127,7 +125,6 @@ class _ProfilePageState extends State<ProfilePage> {
       email = users[0]['email'];
       phone = users[0]['phone'];
       role = users[0]['role'];
-      print(name);
 
       // document.get().then((ds) {
       //   name = ds.data.docs[index].data()!["fullName"];
