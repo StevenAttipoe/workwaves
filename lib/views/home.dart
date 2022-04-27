@@ -3,6 +3,7 @@ import 'package:workwaves/views/map/map.dart';
 import 'package:workwaves/views/nav/profile.dart';
 import 'package:workwaves/views/nav/resume.dart';
 import 'package:workwaves/views/nav/search.dart';
+import 'package:workwaves/views/widgets/project_view.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -10,9 +11,13 @@ class Home extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       title: 'Workwaves',
-      home: MyHomePage(),
+      initialRoute: '/home',
+      routes: {
+        '/home': (context) => const MyHomePage(),
+        '/project': (context) => const ProjectView(),
+      },
     );
   }
 }

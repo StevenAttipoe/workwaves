@@ -6,6 +6,7 @@ import 'package:workwaves/views/nav/chat.dart';
 import 'package:workwaves/views/nav/profile.dart';
 import 'package:workwaves/views/nav/resume.dart';
 import 'package:workwaves/views/nav/search.dart';
+import 'package:workwaves/views/widgets/project_view.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -15,8 +16,6 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  String uid = FirebaseAuth.instance.currentUser!.uid.toString();
-
   final _projectSearch = FirebaseFirestore.instance;
   late List projectsData = [];
 
@@ -25,9 +24,10 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
     getData();
   }
-    void dispose() {
+
+  void dispose() {
     super.dispose();
-    }
+  }
 
   Future<void> getData() async {
     QuerySnapshot querySnapshot =
@@ -36,12 +36,37 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {
       projectsData = querySnapshot.docs.map((doc) => doc.data()).toList();
     });
-
   }
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    String searchString = "";
+    List<dynamic> items = [];
+
+  void filterSearchResults(String query) {
+    
+    List<dynamic> dummySearchList = [];
+    dummySearchList.addAll(projectsData);
+    if(query.isNotEmpty) {
+      List<dynamic> dummyListData =[];
+      dummySearchList.forEach((item) {
+        if(item.contains(query)) {
+          dummyListData.add(item);
+        }
+      });
+      setState(() {
+        items.clear();
+        items.addAll(dummyListData);
+      });
+      return;
+    } else {
+      setState(() {
+        items.clear();
+        items.addAll(projectsData);
+      });
+    }
+  }
 
     return Scaffold(
         body: SafeArea(
@@ -58,6 +83,27 @@ class _SearchPageState extends State<SearchPage> {
                     "Gigs Available",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
+                  Row(
+                    children:  [
+                      Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric( vertical: 16),
+                          child: TextField(
+                            onChanged: (value) {
+                              filterSearchResults(value);
+                            },
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                ),
+                                hintText: 'Search',
+                                suffixIcon: Icon(Icons.search,size: 37),
+                          )
+                        ),
+                        ),
+                      ),
+                    ]
+                  ),
                   const SizedBox(height: 10),
                   ListView.builder(
                       scrollDirection: Axis.vertical,
@@ -65,100 +111,99 @@ class _SearchPageState extends State<SearchPage> {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: projectsData.length,
                       itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                height: 30,
-                                child: Text(
-                                  projectsData[index]['Name'],
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/project',
+                              arguments: 
+                                OneProject(
+                                  projectsData[index]['Name'].toString(),
+                                  projectsData[index]['Description'].toString(),
+                                  projectsData[index]['Price'].toString(),
+                                  projectsData[index]['tag1'].toString(),
+                                  projectsData[index]['tag2'].toString()
+                                )
+                            );
+                          },
+                          child: ListTile(
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  height: 30,
+                                  child: Text(
+                                    projectsData[index]['Name'],
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Description",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 7),
-                              Text(projectsData[index]['Description'],
-                                  maxLines: 3, overflow: TextOverflow.ellipsis),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 8.0, bottom: 8),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 10),
-                                      child: Container(
+                              ],
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Description",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 7),
+                                Text(projectsData[index]['Description'],
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 8.0, bottom: 8),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                  Radius.circular(2),
+                                                ),
+                                                border: Border.all(
+                                                  color: Colors.grey,
+                                                )),
+                                            child: Text(
+                                              projectsData[index]['tag1'],
+                                              style:
+                                                  const TextStyle(fontSize: 15),
+                                            )),
+                                      ),
+                                      Container(
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   const BorderRadius.all(
-                                                Radius.circular(2),
-                                              ),
+                                                      Radius.circular(2)),
                                               border: Border.all(
                                                 color: Colors.grey,
                                               )),
                                           child: Text(
-                                            projectsData[index]['tag1'],
+                                            projectsData[index]['tag2'],
                                             style:
                                                 const TextStyle(fontSize: 15),
                                           )),
-                                    ),
-                                    Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(2)),
-                                            border: Border.all(
-                                              color: Colors.grey,
-                                            )),
-                                        child: Text(
-                                          projectsData[index]['tag2'],
-                                          style: const TextStyle(fontSize: 15),
-                                        )),
-                                    const Spacer(),
-                                    Text(
-                                      "Ghc" +
-                                          projectsData[index]['Price']
-                                              .toString(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                          fontSize: 15),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
+                                      const Spacer(),
+                                      Text(
+                                        "Ghc" +
+                                            projectsData[index]['Price']
+                                                .toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 15),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                          trailing:
-                                Padding(
-                                  padding: const EdgeInsets.only(top:50.0),
-                                  child: IconButton(
-                                      onPressed: () {
-                                      //  var document =  FirebaseFirestore.instance;
-                                      //       document
-                                      //       .collection('project-info')
-                                      //       .doc(uid)
-                                      //       .collection('All-Projects')
-                                      //       .doc(uid)
-                                      //       .set({
-                                      //         'contact_name': projectsData[index]['Name'],
-                                      //         'project_name': projectsData[index]['Description']
-                                      //   });
-                                      //   showAddDialog(context, projectsData[index]['Name']);
-                                      },
-                                      icon: const Icon(Icons.arrow_forward_ios)),
-                                ),
                         );
                       }),
                   Center(

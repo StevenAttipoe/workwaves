@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:workwaves/views/nav/profile.dart';
+import 'package:workwaves/views/nav/resume.dart';
+import 'package:workwaves/views/nav/search.dart';
 import 'package:workwaves/views/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:workwaves/views/widgets/project_view.dart';
+import 'package:workwaves/views/map/map.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,8 +20,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: ' WorkWaves',
-      home: Splash(),
       debugShowCheckedModeBanner: false,
+      initialRoute: '/splash',
+      routes: {
+        '/splash': (context) => Splash(),
+        '/project': (context) => const ProjectView(),
+        '/search': (context) => const SearchPage(),
+        '/map': (context) =>  const Map(),
+        '/profile': (context) => const ProfilePage(),
+        '/resume': (context) => const ResumePage(),
+      },
     );
   }
 }
