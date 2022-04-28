@@ -1,11 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:workwaves/model/project_model.dart';
-import 'package:workwaves/views/nav/chat.dart';
-import 'package:workwaves/views/nav/profile.dart';
-import 'package:workwaves/views/nav/resume.dart';
-import 'package:workwaves/views/nav/search.dart';
 import 'package:workwaves/views/widgets/project_view.dart';
 
 class SearchPage extends StatefulWidget {
@@ -44,29 +38,29 @@ class _SearchPageState extends State<SearchPage> {
     String searchString = "";
     List<dynamic> items = [];
 
-  void filterSearchResults(String query) {
+  // void filterSearchResults(String query) {
     
-    List<dynamic> dummySearchList = [];
-    dummySearchList.addAll(projectsData);
-    if(query.isNotEmpty) {
-      List<dynamic> dummyListData =[];
-      dummySearchList.forEach((item) {
-        if(item.contains(query)) {
-          dummyListData.add(item);
-        }
-      });
-      setState(() {
-        items.clear();
-        items.addAll(dummyListData);
-      });
-      return;
-    } else {
-      setState(() {
-        items.clear();
-        items.addAll(projectsData);
-      });
-    }
-  }
+  //   List<dynamic> dummySearchList = [];
+  //   dummySearchList.addAll(projectsData);
+  //   if(query.isNotEmpty) {
+  //     List<dynamic> dummyListData =[];
+  //     dummySearchList.forEach((item) {
+  //       if(item.contains(query)) {
+  //         dummyListData.add(item);
+  //       }
+  //     });
+  //     setState(() {
+  //       items.clear();
+  //       items.addAll(dummyListData);
+  //     });
+  //     return;
+  //   } else {
+  //     setState(() {
+  //       items.clear();
+  //       items.addAll(projectsData);
+  //     });
+  //   }
+  // }
 
     return Scaffold(
         body: SafeArea(
@@ -83,27 +77,27 @@ class _SearchPageState extends State<SearchPage> {
                     "Gigs Available",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
-                  Row(
-                    children:  [
-                      Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric( vertical: 16),
-                          child: TextField(
-                            onChanged: (value) {
-                              filterSearchResults(value);
-                            },
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                ),
-                                hintText: 'Search',
-                                suffixIcon: Icon(Icons.search,size: 37),
-                          )
-                        ),
-                        ),
-                      ),
-                    ]
-                  ),
+                  // Row(
+                  //   children:  [
+                  //     Expanded(
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.symmetric( vertical: 16),
+                  //         child: TextField(
+                  //           onChanged: (value) {
+                  //             filterSearchResults(value);
+                  //           },
+                  //             decoration: const InputDecoration(
+                  //               border: OutlineInputBorder(
+                  //                 borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  //               ),
+                  //               hintText: 'Search',
+                  //               suffixIcon: Icon(Icons.search,size: 37),
+                  //         )
+                  //       ),
+                  //       ),
+                  //     ),
+                  //   ]
+                  // ),
                   const SizedBox(height: 10),
                   ListView.builder(
                       scrollDirection: Axis.vertical,
@@ -118,6 +112,7 @@ class _SearchPageState extends State<SearchPage> {
                                 OneProject(
                                   projectsData[index]['Name'].toString(),
                                   projectsData[index]['Description'].toString(),
+                                  projectsData[index]['phone'].toString(),
                                   projectsData[index]['Price'].toString(),
                                   projectsData[index]['tag1'].toString(),
                                   projectsData[index]['tag2'].toString()
