@@ -15,13 +15,6 @@ class ResumePage extends StatefulWidget {
 }
 
 class _ResumePageState extends State<ResumePage> {
-  late List<ChartData> data = [
-    ChartData('CHN', 12),
-    ChartData('GER', 15),
-    ChartData('RUS', 30),
-    ChartData('BRZ', 6.4),
-    ChartData('IND', 14)
-  ];
   late TooltipBehavior _tooltip;
 
   var _projects = FirebaseFirestore.instance;
@@ -29,28 +22,62 @@ class _ResumePageState extends State<ResumePage> {
   late List projectsData = [];
   late QuerySnapshot querySnapshot;
 
+  List<ChartData> data = [];
+  int total = 0;
+
   @override
   void initState() {
     _tooltip = TooltipBehavior(enable: true);
     super.initState();
     getData();
+    updateGraph();
+    updateTotal();
+  }
+
+  void dispose() {
+    super.dispose();
   }
 
   Future<void> getData() async {
-     querySnapshot = await _projects
+    querySnapshot = await _projects
         .collection('project-info')
         .doc(uid)
         .collection('All-Projects')
         .get();
 
-    print(querySnapshot.docs[0].reference);
     setState(() {
       projectsData = querySnapshot.docs.map((doc) => doc.data()).toList();
     });
   }
 
+  void updateGraph() {
+    List<ChartData> dataLoaded = [];
+    for (var i = 0; i < projectsData.length; i++) {
+      dataLoaded.add(ChartData('SEA' + i.toString(),
+          double.parse(projectsData[i]['price'].toString())));
+    }
+
+    setState(() {
+      data = dataLoaded;
+    });
+  }
+
+  void updateTotal() {
+    int x = 0;
+    for (var i = 0; i < projectsData.length; i++) {
+      x += int.parse(projectsData[i]['price'].toString());
+    }
+
+    setState(() {
+      total = x;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    updateGraph();
+    updateTotal();
+
     return Scaffold(
         body: SafeArea(
             child: SingleChildScrollView(
@@ -76,7 +103,6 @@ class _ResumePageState extends State<ResumePage> {
                           isVisible: false),
                       primaryYAxis: NumericAxis(
                           minimum: 0,
-                          maximum: 40,
                           interval: 10,
                           majorGridLines: const MajorGridLines(width: 0),
                           axisLine: const AxisLine(width: 0),
@@ -91,8 +117,8 @@ class _ResumePageState extends State<ResumePage> {
                       ])),
             ),
             Column(
-              children: const [
-                Text(
+              children: [
+                const Text(
                   "Total Gains",
                   style: TextStyle(
                       fontSize: 25,
@@ -100,39 +126,19 @@ class _ResumePageState extends State<ResumePage> {
                       color: Colors.orange),
                 ),
                 Text(
-                  "20K",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 50),
+                  "Ghc"+total.toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                 )
               ],
             )
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "Active Project",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              ),
-              ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Color(0xFF000000))),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ActiveProjects()));
-                  },
-                  child: const Text(
-                    "View All",
-                    style: TextStyle(color: Colors.white),
-                  ))
-            ],
-          ),
-        ),
+        const Padding(
+            padding: EdgeInsets.only(left: 8.0, right: 8.0),
+            child: Text(
+              "Active Project",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            )),
         SingleChildScrollView(
           child: Column(
             children: [
@@ -153,7 +159,6 @@ class _ResumePageState extends State<ResumePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(projectsData[index]['contact_name']),
-                          // Text(projectsData[index]['Price'])
                         ],
                       ),
                       subtitle: Text(projectsData[index]['project_name']),
@@ -192,6 +197,8 @@ class _ResumePageState extends State<ResumePage> {
               onPressed: () async {
                 querySnapshot.docs[index].reference.delete();
                 getData();
+                updateGraph();
+                updateTotal();
                 Navigator.of(context).pop();
               },
             ),

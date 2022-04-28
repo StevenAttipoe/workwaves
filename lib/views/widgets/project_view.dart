@@ -109,7 +109,8 @@ class _ProjectViewState extends State<ProjectView> {
                           .collection('All-Projects')
                           .add({
                         'contact_name': projectToView.name,
-                        'project_name': projectToView.description
+                        'project_name': projectToView.description,
+                        'price': projectToView.price
                       });
                       showAddDialog(context, projectToView.name);
                     },

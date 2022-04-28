@@ -28,11 +28,11 @@ class _ReviewScreenState extends State<ReviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Color(0xff99879D),
         ),
         backgroundColor: Colors.white,
-        title: Text(
+        title: const Text(
           "Back",
           style: TextStyle(color: Color(0xff99879D)),
         ),
@@ -51,7 +51,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
                     title: Text(documentSnapshot['comment']),
-                    trailing: SizedBox(
+                    trailing: const SizedBox(
                       width: 100,
                     ),
                   ),
