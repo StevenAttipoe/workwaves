@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:workwaves/views/loginScreen.dart';
 import 'package:workwaves/views/subpages/review_screen.dart';
+import 'package:workwaves/views/subpages/update_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -31,6 +32,8 @@ class _ProfilePageState extends State<ProfilePage> {
         buildContent(),
         SizedBox(height: 20),
         buildReviews(),
+        SizedBox(height: 20),
+        buildUpdate(),
         SizedBox(height: 115),
         buildSignOut(),
       ]),
@@ -181,6 +184,19 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Colors.grey.shade800,
         backgroundImage: NetworkImage(
           "https://cdn-icons-png.flaticon.com/512/1077/1077012.png",
+        ),
+      );
+
+  Widget buildUpdate() => Container(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => UpdateScreen()));
+          },
+          child: const Text('Update Profile'),
+          style: ElevatedButton.styleFrom(
+            primary: Colors.lightBlue,
+          ),
         ),
       );
 
