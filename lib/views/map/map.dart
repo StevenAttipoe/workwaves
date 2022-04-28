@@ -20,6 +20,10 @@ class _MapState extends State<Map> {
     getGeoLocationPosition();
   }
 
+  void dispose() {
+    super.dispose();
+  }
+
   Future<Position> getGeoLocationPosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -63,7 +67,7 @@ class _MapState extends State<Map> {
   @override
   Widget build(BuildContext context) {
     getGeoLocationPosition();
-
+    if (position == null) {}
     return Container(
         child: FlutterMap(
       options: MapOptions(
@@ -84,41 +88,29 @@ class _MapState extends State<Map> {
             Marker(
               width: 80.0,
               height: 80.0,
-              point: LatLng.LatLng(5.763339126301425,-0.2206036355921337),
-              builder: (ctx) => Column(
-                children: const [
-                  Icon(
-                    Icons.my_location,
-                    color: Colors.white),
-                  Text("Student Tutor Needed")
-                  ]
-              ),
-            ),
-             Marker(
-              width: 80.0,
-              height: 80.0,
-              point: LatLng.LatLng(5.767561917050639,-0.22089649928894728),
-              builder: (ctx) => Column(
-                children: const [
-                  Icon(
-                    Icons.my_location,
-                    color: Colors.white),
-                  Text("Student Driver Needed")
-                  ]
-              ),
+              point: LatLng.LatLng(5.763339126301425, -0.2206036355921337),
+              builder: (ctx) => Column(children: const [
+                Icon(Icons.my_location, color: Colors.white),
+                Text("Student Tutor Needed")
+              ]),
             ),
             Marker(
               width: 80.0,
               height: 80.0,
-              point: LatLng.LatLng(5.759153498737126,-0.2235914487966606),
-              builder: (ctx) => Column(
-                children: const [
-                  Icon(
-                    Icons.my_location,
-                    color: Colors.white),
-                  Text("Student Driver Needed")
-                  ]
-              ),
+              point: LatLng.LatLng(5.767561917050639, -0.22089649928894728),
+              builder: (ctx) => Column(children: const [
+                Icon(Icons.my_location, color: Colors.white),
+                Text("Student Driver Needed")
+              ]),
+            ),
+            Marker(
+              width: 80.0,
+              height: 80.0,
+              point: LatLng.LatLng(5.759153498737126, -0.2235914487966606),
+              builder: (ctx) => Column(children: const [
+                Icon(Icons.my_location, color: Colors.white),
+                Text("Student Driver Needed")
+              ]),
             ),
           ],
         ),
