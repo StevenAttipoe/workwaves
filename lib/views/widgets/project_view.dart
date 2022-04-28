@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class ProjectView extends StatefulWidget {
   const ProjectView({Key? key}) : super(key: key);
@@ -108,17 +110,28 @@ class _ProjectViewState extends State<ProjectView> {
                           .doc(uid)
                           .collection('All-Projects')
                           .add({
-                        'contact_name': projectToView.name,
-                        'project_name': projectToView.description,
-                        'price': projectToView.price
-                      });
+                            'contact_name': projectToView.name,
+                            'project_name': projectToView.description,
+                            'price': projectToView.price
+                          });
                       showAddDialog(context, projectToView.name);
                     },
                     child: const Text('Add Gig'),
                     style: ElevatedButton.styleFrom(primary: Colors.black)),
                 ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Call'),
+                    onPressed: () {
+                      try {
+                        launchUrl(
+                          Uri(
+                            scheme: 'tel',
+                            path: projectToView.phone,
+                          )
+                        );
+                      } catch (e) {
+                        throw 'Could not place call';
+                      }
+                    },
+                    child:  Text('Call '+projectToView.phone),
                     style: ElevatedButton.styleFrom(primary: Colors.black)),
               ],
             ),
@@ -161,8 +174,9 @@ class OneProject {
   final String name;
   final String description;
   final String price;
+  final String phone;
   final String tag1;
   final String tag2;
 
-  OneProject(this.name, this.description, this.price, this.tag1, this.tag2);
+  OneProject(this.name, this.description, this.phone,this.price, this.tag1, this.tag2);
 }
