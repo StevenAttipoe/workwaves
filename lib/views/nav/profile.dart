@@ -171,8 +171,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget buildCoverImage() => Container(
         color: Colors.grey,
-        child: Image.asset(
-          'assets/icons/background.jpg',
+        child: Image.network(
+          'https://images.unsplash.com/photo-1524055988636-436cfa46e59e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80',
           height: coverHeight,
           width: double.infinity,
           fit: BoxFit.cover,
@@ -182,7 +182,8 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget buildProfileImage() => CircleAvatar(
         radius: profileHeight / 2.5,
         backgroundColor: Colors.grey.shade800,
-        foregroundImage: AssetImage('assets/icons/avatar.png'),
+        backgroundImage: NetworkImage(
+            "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"),
       );
 
   Widget buildUpdate() => Container(
