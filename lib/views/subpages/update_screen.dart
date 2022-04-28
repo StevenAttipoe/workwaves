@@ -20,9 +20,10 @@ class _UpdateScreenState extends State<UpdateScreen> {
         body: Padding(
           padding: EdgeInsets.all(15),
           child: Column(children: <Widget>[
-            TextField(
-
-          ).
+            TextField(),
+            TextField(),
+            TextField(),
+            TextField(),
           ]),
         ),
       ),
