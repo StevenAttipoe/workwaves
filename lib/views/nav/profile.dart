@@ -34,7 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
         buildReviews(),
         SizedBox(height: 20),
         buildUpdate(),
-        SizedBox(height: 115),
+        SizedBox(height: 90),
         buildSignOut(),
       ]),
     );
@@ -171,8 +171,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget buildCoverImage() => Container(
         color: Colors.grey,
-        child: Image.network(
-          "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80",
+        child: Image.asset(
+          'assets/icons/background.jpg',
           height: coverHeight,
           width: double.infinity,
           fit: BoxFit.cover,
@@ -182,15 +182,13 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget buildProfileImage() => CircleAvatar(
         radius: profileHeight / 2.5,
         backgroundColor: Colors.grey.shade800,
-        backgroundImage: NetworkImage(
-          "https://cdn-icons-png.flaticon.com/512/1077/1077012.png",
-        ),
+        foregroundImage: AssetImage('assets/icons/avatar.png'),
       );
 
   Widget buildUpdate() => Container(
         child: ElevatedButton(
           onPressed: () {
-            Navigator.pushReplacement(context,
+            Navigator.push(context,
                 MaterialPageRoute(builder: (context) => UpdateScreen()));
           },
           child: const Text('Update Profile'),
