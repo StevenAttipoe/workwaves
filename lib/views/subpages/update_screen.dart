@@ -116,10 +116,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                       } catch (e) {
                         print(e);
                       }
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProfilePage()));
+                      Navigator.pop(context);
                     },
                     child: const Text('Update'),
                   ),
